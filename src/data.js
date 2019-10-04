@@ -59,6 +59,12 @@ export default function createData(
         return {}.hasOwnProperty.call(raw, `${prefix}${key}`);
       },
       keys() {
+        const keys = Object.keys(raw);
+        keys.forEach(key => {
+          if (expires.has(key) && expires.isExpired(key)) {
+            this.delete(key);
+          }
+        });
         return Object.keys(raw);
       },
       set(key, val) {
